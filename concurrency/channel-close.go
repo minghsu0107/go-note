@@ -8,13 +8,15 @@ func main() {
 
 	go func() {
 		for {
-			j, more := <-jobs
-			if more {
-				fmt.Println("received job", j)
-			} else {
-				fmt.Println("received all jobs")
-				done <- true
-				return
+			select {
+			case j, more := <-jobs:
+				if more {
+					fmt.Println("received job", j)
+				} else {
+					fmt.Println("received all jobs")
+					done <- true
+					return
+				}
 			}
 		}
 	}()
