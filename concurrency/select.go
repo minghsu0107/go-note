@@ -29,6 +29,12 @@ func main() {
 		fmt.Println("read on closed channel")
 	}
 
+	// will not enter this loop
+	for i := range c0 {
+		fmt.Println("will not enter this loop")
+		fmt.Println(i)
+	}
+
 	// use select to await both of these values simultaneously,
 	// printing each one as it arrives
 	// if both cases happen at the same time, go will choose one randomly!
