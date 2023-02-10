@@ -9,28 +9,43 @@ import (
 
 func main() {
 	c0 := make(chan string)
-	c1 := make(chan string)
+	c1 := make(chan string, 1)
 	c2 := make(chan string)
+	c3 := make(chan string)
 
 	go func() {
 		close(c0)
+
+		c1 <- "hello"
+		close(c1)
 	}()
 	go func() {
 		time.Sleep(1 * time.Second)
-		c1 <- "one"
+		c2 <- "one"
 	}()
 	go func() {
 		time.Sleep(2 * time.Second)
-		c2 <- "two"
+		c3 <- "two"
 	}()
 
 	select {
 	case <-c0:
-		fmt.Println("read on closed channel")
+		fmt.Println("read on closed buffered channel")
+	}
+
+	select {
+	case v := <-c1:
+		fmt.Printf("read value from closed buffered channel: %v\n", v)
 	}
 
 	// will not enter this loop
 	for i := range c0 {
+		fmt.Println("will not enter this loop")
+		fmt.Println(i)
+	}
+
+	// will not enter this loop
+	for i := range c1 {
 		fmt.Println("will not enter this loop")
 		fmt.Println(i)
 	}
@@ -40,9 +55,9 @@ func main() {
 	// if both cases happen at the same time, go will choose one randomly!
 	for i := 0; i < 2; i++ {
 		select {
-		case msg1 := <-c1:
+		case msg1 := <-c2:
 			fmt.Println("received", msg1)
-		case msg2 := <-c2:
+		case msg2 := <-c3:
 			fmt.Println("received", msg2)
 		}
 	}
