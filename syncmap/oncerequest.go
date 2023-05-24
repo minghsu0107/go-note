@@ -32,6 +32,7 @@ func getReqFromMap(url string) Getter {
 	})
 
 	f, loaded := table.LoadOrStore(url, wrapGetter)
+	// already stored by another concurrent goroutine
 	if loaded {
 		return f.(Getter)
 	}
