@@ -30,7 +30,7 @@ func main() {
 
 	select {
 	case <-c0:
-		fmt.Println("read on closed buffered channel")
+		fmt.Println("read on closed unbuffered channel")
 	}
 
 	select {
