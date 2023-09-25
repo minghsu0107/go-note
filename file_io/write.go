@@ -3,7 +3,6 @@ package main
 import (
 	"bufio"
 	"fmt"
-	"io/ioutil"
 	"os"
 )
 
@@ -16,7 +15,7 @@ func check(e error) {
 func main() {
 
 	d1 := []byte("hello\ngo\n")
-	err := ioutil.WriteFile("/tmp/dat1", d1, 0644)
+	err := os.WriteFile("/tmp/dat1", d1, 0644)
 	check(err)
 
 	f, err := os.Create("/tmp/dat2") // f is *File (pointer)
