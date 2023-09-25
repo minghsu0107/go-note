@@ -4,7 +4,6 @@ import (
 	"bufio"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"os"
 	"reflect"
 )
@@ -17,7 +16,7 @@ func check(e error) {
 
 func main() {
 
-	dat, err := ioutil.ReadFile("/tmp/dat")
+	dat, err := os.ReadFile("/tmp/dat")
 	check(err)
 	fmt.Println(reflect.TypeOf(dat)) // []uint8
 	fmt.Print(string(dat))
